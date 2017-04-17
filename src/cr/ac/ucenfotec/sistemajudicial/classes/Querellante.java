@@ -1,13 +1,13 @@
 package cr.ac.ucenfotec.sistemajudicial.classes;
 
-public class Quellerarte extends Persona {
+public class Querellante extends Persona {
 	private String direccion;
 	//Constructor
-	public Quellerarte() {
+	public Querellante() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Quellerarte(int iD, String cedula, String nombre, String apellidos, String telefono, String direccion) {
+	public Querellante(int iD, String cedula, String nombre, String apellidos, String telefono, String direccion) {
 		super(iD, cedula, nombre, apellidos, telefono);
 		// TODO Auto-generated constructor stub
 		this.direccion = direccion;
