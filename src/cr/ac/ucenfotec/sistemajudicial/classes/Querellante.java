@@ -3,10 +3,6 @@ package cr.ac.ucenfotec.sistemajudicial.classes;
 public class Querellante extends Persona {
 	private String direccion;
 	//Constructor
-	public Querellante() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	public Querellante(int iD, String cedula, String nombre, String apellidos, String telefono, String direccion) {
 		super(iD, cedula, nombre, apellidos, telefono);
 		// TODO Auto-generated constructor stub

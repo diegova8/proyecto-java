@@ -7,10 +7,6 @@ public class Persona {
 	protected String apellidos;
 	protected String telefono;
 	//Constructores
-	public Persona() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	public Persona(int iD, String cedula, String nombre, String apellidos, String telefono) {
 		super();
 		ID = iD;
