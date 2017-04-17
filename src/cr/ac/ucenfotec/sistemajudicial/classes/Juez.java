@@ -5,9 +5,6 @@ public class Juez extends Persona {
 	private String usuario;
 	private String clave;
 	//Constructor
-	public Juez() {
-		super();
-	}
 	public Juez(int iD, String cedula, String nombre, String apellidos, String telefono, String sala, String usuario, String clave) {
 		super(iD, cedula, nombre, apellidos, telefono);
 		// TODO Auto-generated constructor stub
