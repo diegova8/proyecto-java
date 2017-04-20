@@ -4,92 +4,156 @@ import cr.ac.ucenfotec.sistemajudicial.accesodb.*;
 import cr.ac.ucenfotec.sistemajudicial.classes.*;
 
 import java.sql.*;
+import java.util.*;
 
 public class MultiQuerellante {
 	
-	public Querellante crear(String pCedula, String pNombre, String pApellidos, String pTelefono, String pDireccion) throws java.sql.SQLException, Exception {
-	
-		Querellante querellante = null;
+	//F1 - Crear
+	public Querellante crear				(String pCedula, String pNombre, String pApellidos, String pTelefono, String pDireccion) throws java.sql.SQLException,Exception {
+		//New Object Querellante
+		Querellante Querellante = null;
+		//New result set
+		ResultSet rs;
+		//SQL query
 		String sql;
-		java.sql.ResultSet rs;
-		
-		sql = "INSERT INTO querellante "+
-				"(cedula, nombre, apellidos, telefono, direccion)"+
-				"VALUES ('"+pCedula+"', '"+pNombre+"', '"+pApellidos+"','"+pTelefono+"', '"+pDireccion+"');";
+		sql 	= 	"INSERT INTO Querellante " 
+					+	"(cedula, nombre, apellidos,telefono,sala,usuario,clave) "
+					+	"VALUES ('"+pCedula+"','"+pNombre+"','"+pApellidos+"','"+pTelefono+"','"+pDireccion+"');";
 		
 		try {
+			//The SQL query is executed
 			Conector.getConector().ejecutarSQL(sql);
-			sql = "SELECT MAX(ID) AS 'ID' FROM querellarte";
+			//The id is got from the DataBase
+			sql = "SELECT MAX(ID) AS 'ID' FROM querellante";
 			rs = Conector.getConector().ejecutarSQL(sql, true);
-			
 			if (rs.next()) {
+				//The ID is obtained
 				int id = rs.getInt ("ID");
-				querellante = new Querellante(id, pCedula, pNombre, pApellidos, pTelefono, pDireccion);
+				//Querellante object is created
+				Querellante = new Querellante(id, pCedula, pNombre, pApellidos, pTelefono, pDireccion);
 			}
-
+			
 		}
 		catch(Exception e) {
-			throw new Exception ("El querellante ya se encuentra en el sistema");
+			throw new Exception ("Error. Este Querellante ya se encuentra en el sistema");
 		}
 		rs.close();
-		return querellante;
+		return Querellante;		
 	}
-	
-	public Querellante buscar(String pCedula) throws java.sql.SQLException, Exception {
-		
-		Querellante querellante = null;
-		java.sql.ResultSet rs;
+	//F2 - Buscar
+	public Querellante buscarPorID 		(int id) throws java.sql.SQLException, Exception {
+		//New Object Querellante
+		Querellante Querellante = null;
+		//New result set
+		ResultSet rs;
+		//SQL query
 		String sql;
-		sql = "SELECT cedula, nombre, apellidos, telefono, direccion "+
-				"From querellante "+
-				"WHERE cedula='"+pCedula+"';";
-		
+		sql 	= 	"SELECT * FROM querellante " 
+				+	"WHERE ID = " + id;
+		//The SQL query is executed	
 		rs = Conector.getConector().ejecutarSQL(sql, true);
-		
 		if(rs.next()){
-			querellante = new Querellante(rs.getInt("id"),
+			//El Querellante se almacena en un objeto y se retorna
+			Querellante = new Querellante	(id,
 					rs.getString("cedula"), 
 					rs.getString("nombre"), 
 					rs.getString("apellidos"),
 					rs.getString("telefono"),
 					rs.getString("direccion"));
 		} else {
-			throw new Exception("El querellante no esta registrado");
+			throw new Exception ("Error. El Querellante no esta registrado");
 		}
 		rs.close();
-		return querellante;
+		return Querellante;
 	}
-	
-	public void actualizar(Querellante pQuerellante) throws java.sql.SQLException, Exception {
-		
+	public Querellante buscarPorCedula 	(String cedula) throws java.sql.SQLException, Exception {
+		//New Object Querellante
+		Querellante Querellante = null;
+		//New result set
+		ResultSet rs;
+		//SQL query
 		String sql;
-		sql = "UPDATE querellante "+
-				"SET cedula='"+pQuerellante.getCedula()+"', "+
-				"nombre='"+pQuerellante.getNombre()+"', "+
-				"apellidos='"+pQuerellante.getApellidos()+"', "+
-				"telefono='"+pQuerellante.getTelefono()+"', "+
-				"direccion='"+pQuerellante.getDireccion()+"';";
+		sql 	= 	"SELECT * FROM querellante " 
+				+	"WHERE cedula = '" + cedula + "';";
+		//The SQL query is executed	
+		rs = Conector.getConector().ejecutarSQL(sql, true);
+		if(rs.next()){
+			//El Querellante se almacena en un objeto y se retorna
+			Querellante = new Querellante	(rs.getInt("id"),
+					cedula, 
+					rs.getString("nombre"), 
+					rs.getString("apellidos"),
+					rs.getString("telefono"),
+					rs.getString("direccion"));
+		} else {
+			throw new Exception ("Error. El Querellante no esta registrado");
+		}
+		rs.close();
+		return Querellante;
+	}
+	//F3 - Actualizar	
+	public void actualizar			(Querellante pQuerellante) throws java.sql.SQLException, Exception {
+		String sql;
+		sql = 	"UPDATE querellante " 
+				+	"SET cedula='"	+	pQuerellante.getCedula()		+ "', "
+				+	"nombre='"		+	pQuerellante.getNombre()		+ "', "
+				+	"apellidos='"	+	pQuerellante.getApellidos()		+ "', "
+				+	"telefono='"	+	pQuerellante.getTelefono()		+ "', "
+				+	"direccion='"	+	pQuerellante.getDireccion()		+ "' "
+				+	"WHERE id="		+	pQuerellante.getID();
 		
 		try {
 			Conector.getConector().ejecutarSQL(sql);
-		}
+		} 
 		catch (Exception e) {
-			throw new Exception ("El querellante no esta registrado");
+			throw new Exception ("Error. El Querellante no esta registrado");
 		}
-		
 	}
-	
-	public void borrar(Querellante pQuerellante) throws java.sql.SQLException, Exception {
-		
+	//F4 - Borrar
+	public void borrar				(Querellante pQuerellante) throws java.sql.SQLException, Exception {
 		String sql;
-		sql = "DELETE FROM querellante "+
-		"WHERE id = '"+pQuerellante.getID()+"';";
-		
+		sql = 	"DELETE FROM querellante "
+				+	"WHERE id="		+	pQuerellante.getID();
 		try {
 			Conector.getConector().ejecutarSQL(sql);
 		}
-		catch (Exception e) {
-			throw new Exception ("El querellante tiene casos abiertos");
+		catch (Exception e){
+			throw new Exception("Error. El Querellante tiene casos");
 		}
 	}
+	//F5 - Listar
+	public  Vector<Querellante> listarQuerellantes () throws SQLException,Exception{
+		//New object Caso
+		Querellante Querellante = null;
+		//New vector
+		Vector<Querellante> vector = new Vector<Querellante>();		
+		//New result set
+		ResultSet rs;
+		//SQL query
+		String sql;
+		sql 	= 	"SELECT * FROM querellante";
+		//The SQL query is executed
+		rs = Conector.getConector().ejecutarSQL(sql, true);
+		try {
+			while (rs.next()) {
+				Querellante = new Querellante	(rs.getInt("id"),
+						rs.getString("cedula"), 
+						rs.getString("nombre"), 
+						rs.getString("apellidos"),
+						rs.getString("telefono"),
+						rs.getString("direccion"));
+				vector.add(Querellante);
+			}
+		}
+		catch (Exception e) {
+			throw new Exception ("Error. El Querellante no está registrado.");
+		}
+		rs.close();		
+		return vector;
+	}
+	
+	
+	
+	
+	
 }	

@@ -19,6 +19,8 @@ public class UI {
 		
 			Querellante q = new Querellante (2, "116810122", "Gary", "Valverde Hampton", "86013609", "San Sebastian");
 			Juez j = new Juez (1, "123", "Juez", "Juez", "88882222", "1", "juez123", "123");
+			
+			
 			Caso c =  (new MultiCaso()).buscarPorID(1);
 			c.setDescripcion("Caso de violacion");
 			c.setEstado("Aceptado");
@@ -33,8 +35,8 @@ public class UI {
 			(new MultiCaso()).actualizar(c);
 			c =  (new MultiCaso()).buscarPorID(1);	
 			
-			Vector<Caso> casos = (new MultiCaso()).listarCasosPorQuerellante(q);
-			
+			//Vector<Caso> casos = (new MultiCaso()).listarCasosPorQuerellante(q);
+			Juez casos = (new MultiJuez()).buscarPorID(1);
 			JOptionPane.showMessageDialog(null, casos.toString());
 			
 		} catch (Exception e) {

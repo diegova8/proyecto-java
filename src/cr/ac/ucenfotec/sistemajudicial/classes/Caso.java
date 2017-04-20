@@ -26,9 +26,6 @@ public class Caso {
 	
 	
 	//Constructor
-	public Caso() {
-		super();
-	}	
 	public Caso(int iD, String descripcion, Querellante quellerarte, Juez juez, String historial) {
 		super();
 		ID = iD;

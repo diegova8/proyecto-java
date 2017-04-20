@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class MultiCaso {
 	
 	//F1 . Insert
-	public  Caso crear(String descripcion, Querellante quellerarte, Juez juez)	throws Exception{
+	public  Caso crear			(String descripcion, Querellante quellerarte, Juez juez)	throws Exception{
 		//New object Caso
 		Caso Caso = null;
 		//New result set
@@ -23,7 +23,6 @@ public class MultiCaso {
 		LocalDate now			= LocalDate.now();
 		String fecha			= now.getYear() + "/" + now.getMonthValue() + "/" + now.getDayOfMonth();
 		String historial		= fecha + " - " + estado;
-		//SQL query
 		String sql;
 		sql 	= 	"INSERT INTO caso "
 				+	"(descripcion, id_querellante, id_juez, estado, fecha, historial) "	
@@ -42,8 +41,9 @@ public class MultiCaso {
 			}
 		}
 		catch (Exception e) {
-			Caso = null;
+			throw new Exception ("Error. Este caso ya se encuentra en el sistema");			
 		}
+		rs.close();
 		return Caso;
 	}
 	//F2 . Find
@@ -73,6 +73,7 @@ public class MultiCaso {
 		} else {
 			throw new Exception ("Error. El Caso buscado no existe");			
 		}
+		rs.close();
 		return Caso;		
 	}
 	//F3 . Actualizar
@@ -87,7 +88,7 @@ public class MultiCaso {
 			Conector.getConector().ejecutarSQL(sql);
 		}
 		catch (Exception e) {
-			throw new Exception ("El Caso no está registrado.");
+			throw new Exception ("Error. El Caso no está registrado.");
 		}
 	}
 	//F4 . Borrar
@@ -99,13 +100,13 @@ public class MultiCaso {
 			Conector.getConector().ejecutarSQL(sql);
 		}
 		catch (Exception e) {
-			throw new Exception ("El Caso tiene cuentas.");
+			throw new Exception ("Error. Error durante la ejecucion");
 		}
 	}
 	//F5 . Listar
-	public  Vector<Caso> listarCasosPorJuez (Juez juez) throws SQLException,Exception{
+	public  Vector<Caso> listarCasosPorJuez 		(Juez juez) throws SQLException,Exception{
 		//New object Caso
-		Caso Caso = new Caso();
+		Caso Caso = null;
 		//New vector
 		Vector<Caso> vector = new Vector<Caso>();		
 		//New result set
@@ -135,12 +136,12 @@ public class MultiCaso {
 		catch (Exception e) {
 			throw new Exception ("El Caso no está registrado.");
 		}
-		
+		rs.close();		
 		return vector;
 	}
-	public  Vector<Caso> listarCasosPorQuerellante (Querellante querellante) throws SQLException,Exception{
+	public  Vector<Caso> listarCasosPorQuerellante 	(Querellante querellante) throws SQLException,Exception{
 		//New object Caso
-		Caso Caso = new Caso();
+		Caso Caso = null;
 		//New vector
 		Vector<Caso> vector = new Vector<Caso>();		
 		//New result set
@@ -170,7 +171,7 @@ public class MultiCaso {
 		catch (Exception e) {
 			throw new Exception ("El Caso no está registrado.");
 		}
-		
+		rs.close();		
 		return vector;
 	}
 	
