@@ -1,6 +1,9 @@
 package cr.ac.ucenfotec.sistemajudicial.classes;
 
+import java.sql.SQLException;
 import java.time.*;
+
+import cr.ac.ucenfotec.sistemajudicial.datamanagment.*;
 
 
 public class Caso {
@@ -10,35 +13,14 @@ public class Caso {
 	private Querellante querellante;
 	private int 		idJuez;
 	private Juez 		juez;
-	private String 		estado;
+	private Estado 		estado;
 	private LocalDate 	fecha;
 	private String		historial;
 	
-	public enum		enumEstado {
-		Recibido, 
-		Aceptado, 
-		Consulta, 
-		Rechazado, 
-		Redactado, 
-		Resuelto, 
-		Revision
-	}
-	
+
 	
 	//Constructor
-	public Caso(int iD, String descripcion, Querellante quellerarte, Juez juez, String historial) {
-		super();
-		ID = iD;
-		this.descripcion = descripcion;
-		this.querellante = quellerarte;
-		this.juez = juez;
-		this.estado = enumEstado.Recibido.name();
-		this.fecha = LocalDate.now();
-		this.historial = historial;
-		
-	}
-	
-	public Caso(int iD, String descripcion, int idQuerellante, int idJuez, String estado, LocalDate fecha,
+	public Caso(int iD, String descripcion, int idQuerellante, int idJuez, Estado estado, LocalDate fecha,
 			String historial) {
 		super();
 		ID = iD;
@@ -61,24 +43,22 @@ public class Caso {
 	public int getidQuellerarte() {
 		return idQuerellante;
 	}
-	/**NOTE: CAMBIO **/
-	public Querellante getQuellerarte() {
+	public Querellante getQuellerarte() throws SQLException, Exception {
 		if (querellante == null) {
-			
+			querellante = (new MultiQuerellante()).buscarPorID(idQuerellante);			
 		}
 		return querellante;
 	}
 	public int getidJuez() {
 		return idJuez;
 	}
-	/**NOTE: CAMBIO **/
-	public Juez getJuez() {
+	public Juez getJuez() throws SQLException, Exception {
 		if (juez == null) {
-			
+			juez = (new MultiJuez()).buscarPorID(idJuez);
 		}
 		return juez;
 	}
-	public String getEstado() {
+	public Estado getEstado() {
 		return estado;
 	}
 	public LocalDate getFecha() {
@@ -105,7 +85,7 @@ public class Caso {
 	public void setJuez(Juez juez) {
 		this.juez = juez;
 	}
-	public void setEstado(String estado) {
+	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}
 	public void setFecha(LocalDate fecha) {
@@ -118,8 +98,8 @@ public class Caso {
 	@Override
 	public String toString() {
 		return "=======================================================\nID:\t\t\t" + ID + "\ndescripcion:\t\t\t"
-				+ descripcion + "\nquellerarte:\n\t\t\t" + querellante + "\njuez:\n\t\t\t" + juez + "\nestado:\t\t\t"
-				+ estado + "\nfecha:\t\t\t" + fecha + "\nhistorial:\t\t\t" + historial
+				+ descripcion + "\nquellerarte:\n\t\t\t" + idQuerellante + "\njuez:\n\t\t\t" + idJuez + "\nestado:\t\t\t"
+				+ estado.val() + "\nfecha:\t\t\t" + fecha + "\nhistorial:\t\t\t" + historial
 				+ "\n=======================================================";
 	}
 	

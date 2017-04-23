@@ -17,16 +17,16 @@ public class MultiCaso {
 		//New result set
 		ResultSet rs;
 		//Data
-		String id_querellarte 	= "" + quellerarte.getID();
-		String id_juez 			= "" + juez.getID();
-		String estado 			= "Recibido";
+		int id_querellarte 		= quellerarte.getID();
+		int id_juez 			= juez.getID();
+		Estado estado			= Estado.RECIBIDO;
 		LocalDate now			= LocalDate.now();
 		String fecha			= now.getYear() + "/" + now.getMonthValue() + "/" + now.getDayOfMonth();
 		String historial		= fecha + " - " + estado;
 		String sql;
 		sql 	= 	"INSERT INTO caso "
 				+	"(descripcion, id_querellante, id_juez, estado, fecha, historial) "	
-				+	"VALUES ('"+descripcion+"','"+id_querellarte+"','"+id_juez+"','"+estado+"','"+fecha+"','"+historial+"');";
+				+	"VALUES ('"+descripcion+"',"+id_querellarte+","+id_juez+",'"+estado.val()+"','"+fecha+"','"+historial+"');";
 		try {
 			//The SQL query is executed
 			Conector.getConector().ejecutarSQL(sql);
@@ -37,11 +37,11 @@ public class MultiCaso {
 				//The ID is obtained
 				int id = rs.getInt ("ID");
 				//Caso object is created
-				Caso = new Caso (id, descripcion, quellerarte, juez, historial);
+				Caso = new Caso(id, descripcion, id_querellarte, id_juez, estado, now, historial);
 			}
 		}
 		catch (Exception e) {
-			throw new Exception ("Error. Este caso ya se encuentra en el sistema");			
+			throw e; //Exception ("Error. Este caso ya se encuentra en el sistema");			
 		}
 		rs.close();
 		return Caso;
@@ -61,13 +61,13 @@ public class MultiCaso {
 		if (rs.next()) {
 			//Fecha 
 			LocalDate fecha = LocalDate.parse(rs.getString("fecha"));
-			
+			String estado = rs.getString("estado");
 			//El caso se almacena en un objeto y se retorna
 			Caso = new Caso (id, 
 							 rs.getString("descripcion"), 
 							 rs.getInt("id_querellante"),
 							 rs.getInt("id_juez"),
-							 rs.getString("estado"),
+							 Estado.valueOf(estado.toUpperCase()),
 							 fecha,
 							 rs.getString("historial"));
 		} else {
@@ -104,7 +104,7 @@ public class MultiCaso {
 		}
 	}
 	//F5 . Listar
-	public  Vector<Caso> listarCasosPorJuez 		(Juez juez) throws SQLException,Exception{
+	public  Vector<Caso> listarCasosPorJuezID 		(int id) throws SQLException,Exception{
 		//New object Caso
 		Caso Caso = null;
 		//New vector
@@ -114,20 +114,21 @@ public class MultiCaso {
 		//SQL query
 		String sql;
 		sql 	= 	"SELECT * FROM caso "
-				+	"WHERE id_juez = " + juez.getID();
+				+	"WHERE id_juez = " + id;
 		//The SQL query is executed
 		rs = Conector.getConector().ejecutarSQL(sql, true);
 		try {
 			while (rs.next()) {
 				//Fecha 
 				LocalDate fecha = LocalDate.parse(rs.getString("fecha"));
+				String estado = rs.getString("estado");
 				
 				//El caso se almacena en un objeto y se retorna
 				Caso = new Caso (rs.getInt("id"), 
 								 rs.getString("descripcion"), 
 								 rs.getInt("id_querellante"),
 								 rs.getInt("id_juez"),
-								 rs.getString("estado"),
+								 Estado.valueOf(estado.toUpperCase()),
 								 fecha,
 								 rs.getString("historial"));
 				vector.add(Caso);
@@ -139,7 +140,7 @@ public class MultiCaso {
 		rs.close();		
 		return vector;
 	}
-	public  Vector<Caso> listarCasosPorQuerellante 	(Querellante querellante) throws SQLException,Exception{
+	public  Vector<Caso> listarCasosPorQuerellanteID 	(int id) throws SQLException,Exception{
 		//New object Caso
 		Caso Caso = null;
 		//New vector
@@ -149,20 +150,21 @@ public class MultiCaso {
 		//SQL query
 		String sql;
 		sql 	= 	"SELECT * FROM caso "
-				+	"WHERE id_querellante = " + querellante.getID();
+				+	"WHERE id_querellante = " + id;
 		//The SQL query is executed
 		rs = Conector.getConector().ejecutarSQL(sql, true);
 		try {
 			while (rs.next()) {
 				//Fecha 
 				LocalDate fecha = LocalDate.parse(rs.getString("fecha"));
+				String estado = rs.getString("estado");
 				
 				//El caso se almacena en un objeto y se retorna
 				Caso = new Caso (rs.getInt("id"), 
 								 rs.getString("descripcion"), 
 								 rs.getInt("id_querellante"),
 								 rs.getInt("id_juez"),
-								 rs.getString("estado"),
+								 Estado.valueOf(estado.toUpperCase()),
 								 fecha,
 								 rs.getString("historial"));
 				vector.add(Caso);

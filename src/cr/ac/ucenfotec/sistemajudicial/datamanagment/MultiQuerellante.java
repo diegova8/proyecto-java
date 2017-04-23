@@ -16,27 +16,31 @@ public class MultiQuerellante {
 		ResultSet rs;
 		//SQL query
 		String sql;
-		sql 	= 	"INSERT INTO Querellante " 
-					+	"(cedula, nombre, apellidos,telefono,sala,usuario,clave) "
+		sql 	= 	"INSERT INTO querellante " 
+					+	"(cedula, nombre, apellidos,telefono,direccion) "
 					+	"VALUES ('"+pCedula+"','"+pNombre+"','"+pApellidos+"','"+pTelefono+"','"+pDireccion+"');";
-		
-		try {
-			//The SQL query is executed
-			Conector.getConector().ejecutarSQL(sql);
-			//The id is got from the DataBase
-			sql = "SELECT MAX(ID) AS 'ID' FROM querellante";
-			rs = Conector.getConector().ejecutarSQL(sql, true);
-			if (rs.next()) {
-				//The ID is obtained
-				int id = rs.getInt ("ID");
-				//Querellante object is created
-				Querellante = new Querellante(id, pCedula, pNombre, pApellidos, pTelefono, pDireccion);
+		if (alreadyExist(pCedula) == false) {
+			try {
+				//The SQL query is executed
+				Conector.getConector().ejecutarSQL(sql);
+				//The id is got from the DataBase
+				sql = "SELECT MAX(ID) AS 'ID' FROM querellante";
+				rs = Conector.getConector().ejecutarSQL(sql, true);
+				if (rs.next()) {
+					//The ID is obtained
+					int id = rs.getInt ("ID");
+					//Querellante object is created
+					Querellante = new Querellante(id, pCedula, pNombre, pApellidos, pTelefono, pDireccion);
+				}
+				 	
 			}
-			
+			catch(Exception e) {
+				throw new Exception ("Error. Este Querellante ya se encuentra en el sistema");
+			}
+		} else {
+			throw new Exception ("Error. Ya existe un usuario con este numero de cedula");
 		}
-		catch(Exception e) {
-			throw new Exception ("Error. Este Querellante ya se encuentra en el sistema");
-		}
+		
 		rs.close();
 		return Querellante;		
 	}
@@ -133,8 +137,8 @@ public class MultiQuerellante {
 		String sql;
 		sql 	= 	"SELECT * FROM querellante";
 		//The SQL query is executed
-		rs = Conector.getConector().ejecutarSQL(sql, true);
 		try {
+			rs = Conector.getConector().ejecutarSQL(sql, true);
 			while (rs.next()) {
 				Querellante = new Querellante	(rs.getInt("id"),
 						rs.getString("cedula"), 
@@ -146,14 +150,43 @@ public class MultiQuerellante {
 			}
 		}
 		catch (Exception e) {
-			throw new Exception ("Error. El Querellante no está registrado.");
+			throw new Exception ("Error. Error de comunicacion.");
 		}
+		if (vector.size() == 0) 
+			throw new Exception ("Error. No hay querellantes registrados.");	
+		
+		
 		rs.close();		
 		return vector;
 	}
-	
-	
-	
+	//F6 - login
+	public Querellante login 	(String cedula) throws java.sql.SQLException, Exception {
+		//New Object Querellante		
+		Querellante querellante = null;
+		//Vector for all the Querellantes
+		Vector<Querellante> querellantes = 	listarQuerellantes();
+		//New result set
+		for (Querellante cadaQuerellante : querellantes) {
+			if (cadaQuerellante.getCedula().equals(cedula)) {
+				querellante = cadaQuerellante;
+			}
+		}
+		return querellante;
+	}
+	//F7 - Already Exists
+	public Boolean alreadyExist 	(String cedula) throws java.sql.SQLException, Exception {
+		//New Object Querellante		
+		Boolean exists = false;
+		//Vector for all the Querellantes
+		Vector<Querellante> querellantes = 	listarQuerellantes();
+		//New result set
+		for (Querellante cadaQuerellante : querellantes) {
+			if (cadaQuerellante.getCedula().equals(cedula)) {
+				exists = true;
+			}
+		}
+		return exists;
+	}
 	
 	
 }	

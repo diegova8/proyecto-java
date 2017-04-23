@@ -138,8 +138,8 @@ public class MultiJuez {
 		String sql;
 		sql 	= 	"SELECT * FROM juez ";
 		//The SQL query is executed
-		rs = Conector.getConector().ejecutarSQL(sql, true);
 		try {
+			rs = Conector.getConector().ejecutarSQL(sql, true);
 			while (rs.next()) {
 				//El juez se almacena en un objeto y se retorna
 				juez = new Juez	(rs.getInt("id"), 
@@ -154,10 +154,45 @@ public class MultiJuez {
 			}
 		}
 		catch (Exception e) {
-			throw new Exception ("Error. El Juez no está registrado.");
+			throw new Exception ("Error. Error de comunicacion.");
 		}
+		if (vector.size() == 0) 
+			throw new Exception ("Error. No hay jueces registrados.");		
+		
+		
 		rs.close();		
 		return vector;
 	}
+	//F6 - login
+	public Juez login 	(String user, String pass) throws java.sql.SQLException, Exception {
+		//New Object Juez		
+		Juez juez = null;
+		//Vector for all the Juezs
+		Vector<Juez> jueces = 	listarJueces();
+		//New result set
+		for (Juez cadaJuez : jueces) {
+			if (cadaJuez.getUsuario().equals(user) && cadaJuez.getClave().equals(pass)) {
+				juez = cadaJuez;
+			}
+		}
+		if (juez == null) {
+			throw new Exception ("Error. El nombre de usuario o contraseña son incorrectos.");			
+		}
+		return juez;
+	}
+	//F7 - Already Exists
+	/*public Boolean alreadyExist 	(String cedula) throws java.sql.SQLException, Exception {
+		//New Object Juez		
+		Boolean exists = false;
+		//Vector for all the Juezs
+		Vector<Juez> jueces = 	listarJueces();
+		//New result set
+		for (Juez cadaJuez : jueces) {
+			if (cadaJuez.getCedula().equals(cedula)) {
+				exists = true;
+			}
+		}
+		return exists;
+	}*/
 	
 }
