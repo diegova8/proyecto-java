@@ -19,7 +19,7 @@ public class casoEstadoJuez {
 	public void open (TreeMap<String,String> Params) {
 		try {
 			//Initialize shell frame
-			ShellFrame = new ShellFrame(210,300,"Prueba",null);		
+			ShellFrame = new ShellFrame(210,300,"Caso historial",null);		
 			//Content charge
 			contentCharge (Params);
 			//ShellFrame standby

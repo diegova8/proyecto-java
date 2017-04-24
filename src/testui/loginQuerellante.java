@@ -28,8 +28,8 @@ public class loginQuerellante {
 	 * Other forms
 	 * 
 	 **===========================================================**/
-	//private static casosQuerellante casosQuerellante = new casosQuerellante();
-	
+	private static casosQuerellante casosQuerellante = new casosQuerellante();
+	private static nuevoQuerellante nuevoQuerellante = new nuevoQuerellante();
 	
 	//Initialization
 	public void open (TreeMap<String,String> Params, Shell shell) {
@@ -83,7 +83,7 @@ public class loginQuerellante {
 								try {
 									TreeMap<String,String> querellante = (new Gestor()).loginQuerellante(cedula.getText());
 									if (querellante == null) {
-										JOptionPane.showMessageDialog(null, "Insert new");
+										nuevoQuerellante.open(cedula.getText(), shell);
 									} else {
 										JOptionPane.showMessageDialog(null, "Log In");									
 									}

@@ -17,6 +17,11 @@ public class GUI {
 
 	protected Shell shell;
 	private Text cedula;
+	private Text text;
+	private Text text_1;
+	private Text text_2;
+	private Text text_3;
+	private Text text_4;
 
 	/**
 	 * Launch the application.
@@ -51,7 +56,7 @@ public class GUI {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(350, 200);
+		shell.setSize(330, 350);
 		shell.setText("SWT Application");
 		shell.setLayout(new GridLayout(1, false));
 		new Label(shell, SWT.NONE);
@@ -59,16 +64,39 @@ public class GUI {
 		Label lblCdula = new Label(shell, SWT.NONE);
 		lblCdula.setText("C\u00E9dula");
 		
-		cedula = new Text(shell, SWT.BORDER);
-		cedula.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		text = new Text(shell, SWT.BORDER);
+		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label lblNombre = new Label(shell, SWT.NONE);
+		lblNombre.setText("Nombre");
+		
+		text_1 = new Text(shell, SWT.BORDER);
+		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label lblApellidos = new Label(shell, SWT.NONE);
+		lblApellidos.setText("Apellidos");
+		
+		text_2 = new Text(shell, SWT.BORDER);
+		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label lblTelfono = new Label(shell, SWT.NONE);
+		lblTelfono.setText("Tel\u00E9fono");
+		
+		text_3 = new Text(shell, SWT.BORDER);
+		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		Label lblDireccin = new Label(shell, SWT.NONE);
+		lblDireccin.setText("Direcci\u00F3n");
+		
+		text_4 = new Text(shell, SWT.BORDER);
+		text_4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(shell, SWT.NONE);
 		
-		Button btnIngresar = new Button(shell, SWT.NONE);
-		GridData gd_btnIngresar = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
-		gd_btnIngresar.widthHint = 200;
-		btnIngresar.setLayoutData(gd_btnIngresar);
-		btnIngresar.setText("Ingresar");
-		
+		Button btnRegistrarUsuario = new Button(shell, SWT.NONE);
+		GridData gd_btnRegistrarUsuario = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
+		gd_btnRegistrarUsuario.widthHint = 200;
+		btnRegistrarUsuario.setLayoutData(gd_btnRegistrarUsuario);
+		btnRegistrarUsuario.setText("Registrar usuario");
 		
 		
 		
