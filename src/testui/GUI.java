@@ -1,15 +1,22 @@
 package testui;
 
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Table;
 
 public class GUI {
 
 	protected Shell shell;
-	
+	private Text cedula;
 
 	/**
 	 * Launch the application.
@@ -44,31 +51,28 @@ public class GUI {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(210, 350);
+		shell.setSize(350, 200);
 		shell.setText("SWT Application");
+		shell.setLayout(new GridLayout(1, false));
+		new Label(shell, SWT.NONE);
 		
-		Combo combo = new Combo(shell, SWT.NONE);
-		combo.setBounds(10, 73, 174, 23);
+		Label lblCdula = new Label(shell, SWT.NONE);
+		lblCdula.setText("C\u00E9dula");
 		
-		Label lblDescripcion = new Label(shell, SWT.NONE);
-		lblDescripcion.setBounds(10, 31, 55, 15);
-		lblDescripcion.setText("Descripcion");
+		cedula = new Text(shell, SWT.BORDER);
+		cedula.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(shell, SWT.NONE);
 		
-		Label lblFecha = new Label(shell, SWT.NONE);
-		lblFecha.setBounds(10, 52, 55, 15);
-		lblFecha.setText("Fecha");
+		Button btnIngresar = new Button(shell, SWT.NONE);
+		GridData gd_btnIngresar = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
+		gd_btnIngresar.widthHint = 200;
+		btnIngresar.setLayoutData(gd_btnIngresar);
+		btnIngresar.setText("Ingresar");
 		
-		Label lblHistorial = new Label(shell, SWT.NONE);
-		lblHistorial.setBounds(10, 102, 174, 200);
-		lblHistorial.setText("Historial");
 		
-		Label lblNewLabel = new Label(shell, SWT.NONE);
-		lblNewLabel.setBounds(10, 10, 55, 15);
-		lblNewLabel.setText("ID:");
 		
-		Label lblNewLabel_1 = new Label(shell, SWT.NONE);
-		lblNewLabel_1.setBounds(129, 10, 55, 15);
-		lblNewLabel_1.setText("ID#");
+		
 
 	}
+
 }

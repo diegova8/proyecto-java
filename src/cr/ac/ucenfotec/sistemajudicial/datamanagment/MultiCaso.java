@@ -91,6 +91,20 @@ public class MultiCaso {
 			throw new Exception ("Error. El Caso no está registrado.");
 		}
 	}
+	public  void actualizarEstado		(Caso pCaso) 	throws SQLException,Exception{
+		String sql;
+		sql = 	"UPDATE caso "
+				+	"SET estado='"		+	pCaso.getEstado()		+ "',"
+				+ 	"historial='" 		+	pCaso.getHistorial()	+ "' "
+				+ 	"WHERE id="			+	pCaso.getID();
+		try {
+			Conector.getConector().ejecutarSQL(sql);
+		}
+		catch (Exception e) {
+			throw new Exception ("Error. El Caso no está registrado.");
+		}
+	}
+	
 	//F4 . Borrar
 	public  void borrar			(Caso pCaso) 	throws SQLException,Exception{
 		String sql;

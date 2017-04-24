@@ -2,6 +2,7 @@ package cr.ac.ucenfotec.sistemajudicial.datamanagment;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -45,6 +46,49 @@ public class Gestor {
 		
 		return data;
 	}
+	/** List **/
+	public String[] getEstados (String ID) throws SQLException, Exception {
+		String[] estados = null;
+		//se obtiene el valor entero de id
+		int enteroID = Integer.parseInt(ID);
+		//New Caso Object
+		Caso caso	=	null;
+		//The object is got
+		caso = (new MultiCaso()).buscarPorID(enteroID);
+				
+		switch (caso.getEstado()) {
+			case ACEPTADO:
+				estados = new String[] {Estado.ACEPTADO.val(),Estado.REDACTADO.val()};
+				break;
+			case CONSULTA:
+				estados = new String[] {Estado.CONSULTA.val(),Estado.ACEPTADO.val(), Estado.RECHAZADO.val()};
+				break;
+			case RECHAZADO:
+				estados = new String[] {Estado.RECHAZADO.val()};
+				break;
+			case RECIBIDO:
+				estados = new String[] {Estado.RECIBIDO.val(),Estado.ACEPTADO.val(), Estado.CONSULTA.val(), Estado.RECHAZADO.val()};
+				break;
+			case REDACTADO:
+				if (caso.getHistorial().contains(Estado.REVISION.toString())) {
+					estados = new String[] {Estado.REDACTADO.val(), Estado.RESUELTO.val()};
+				} else {
+					estados = new String[] {Estado.REDACTADO.val(), Estado.REVISION.val()};					
+				}
+				break;
+			case RESUELTO:
+				estados = new String[] {Estado.RESUELTO.val()};
+				break;
+			case REVISION:
+				estados = new String[] {Estado.REVISION.val(),Estado.REDACTADO.val()};
+				break;
+		
+		}
+		
+		
+		
+		return estados;
+	}
 	public Vector<TreeMap<String,String>> listarCasosPorJuez (int id) throws SQLException, Exception {
 		
 		Vector <Caso> casos = (new MultiCaso()).listarCasosPorJuezID(id);
@@ -60,6 +104,9 @@ public class Gestor {
 			//Data storage
 			data.put("id",					"" + caso.getID());
 			data.put("descripcion", 		caso.getDescripcion());
+			
+			Querellante querellante = (new MultiQuerellante()).buscarPorID(caso.getidQuellerarte());
+			data.put("nombreQ", querellante.getNombre() + " " + querellante.getApellidos());
 			data.put("id_querellante", 		"" + caso.getidQuellerarte());
 			data.put("id_juez", 			"" + caso.getidJuez());
 			data.put("estado", 				caso.getEstado().val());
@@ -72,6 +119,32 @@ public class Gestor {
 		return casosTM;
 		
 	}
+	/** Update **/
+	public void updateEstado (String ID, String pEstado) throws SQLException, Exception {
+		//se obtiene el valor entero de id
+		int enteroID = Integer.parseInt(ID);
+		//New Caso Object
+		Caso caso	=	null;
+		//The object is got
+		caso = (new MultiCaso()).buscarPorID(enteroID);
+		//Estado
+		Estado estado = Estado.valueOf(pEstado.toUpperCase());
+		//Updates object
+		caso.setEstado(estado);
+		//Updates history
+		LocalDateTime now			= LocalDateTime.now();
+		String fecha			= now.getYear() + "/" + now.getMonthValue() + "/" + now.getDayOfMonth() + " - " + now.getHour() + ":" + now.getMinute();
+		
+		
+		String historial		= caso.getHistorial() + "\n";
+		historial 				+= fecha + " - " + estado;
+		
+		caso.setHistorial(historial);
+		//Update DB
+		(new MultiCaso()).actualizarEstado(caso);
+		
+	}
+	
 	/**======================================================================
 	 * 
 	 * 	Juez - Gestor de multis
