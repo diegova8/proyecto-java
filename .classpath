@@ -5,5 +5,7 @@
 	<classpathentry kind="lib" path="lib/accesoDB.jar"/>
 	<classpathentry kind="lib" path="lib/ini4j-0.5.4.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector.jar"/>
+	<classpathentry kind="lib" path="lib/swt.jar"/>
+	<classpathentry kind="lib" path="swing2swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
